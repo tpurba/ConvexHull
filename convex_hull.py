@@ -48,7 +48,7 @@ class ConvexHullSolver(QObject):
 		self.eraseTangent(line)
 
 	def showHull(self, polygon, color):
-		print("In show hull")
+		#print("In show hull")
 		self.view.addLines(polygon,color)
 		if self.pause:
 			time.sleep(PAUSE)
@@ -63,9 +63,9 @@ class ConvexHullSolver(QObject):
 		slope = (point1.y() - point2.y()) / (point1.x() - point2.x())
 		return slope
 	def convertHullToPolygon(self, hull):
-		print("In convert hull to polygon")
-		print("PRINTING THE HULL FORWARD")
-		hull.display_forward()
+		# print("In convert hull to polygon")
+		# print("PRINTING THE HULL FORWARD")
+		# hull.display_forward()
 		current = hull.head
 		polygon = []
 		while current:
@@ -77,10 +77,10 @@ class ConvexHullSolver(QObject):
 				break
 			
 			
-		print("polygon: ", polygon)
+		#print("polygon: ", polygon)
 		self.showHull(polygon, RED)
 	def findUpperTangent(self, leftHull, rightHull):
-		print("In find upper tangent")
+		#print("In find upper tangent")
 		done = False
 		leftChecking = True
 		rightChecking = True
@@ -101,6 +101,7 @@ class ConvexHullSolver(QObject):
 					leftChecking = True
 					maxSlope = tempSlope
 					leftUpperTangent = currentLeft # set the current upper tangent point
+					rightChecking = True
 			while(rightChecking == True):
 				currentRight = currentRight.next 
 				if(currentRight.point == rightHull.head.point):
@@ -115,7 +116,7 @@ class ConvexHullSolver(QObject):
 		return leftUpperTangent, rightUppertangent
 	
 	def findLowerTangent(self, leftHull, rightHull):
-		print("In find lower tangent")
+		#print("In find lower tangent")
 		done = False
 		leftChecking = True
 		rightChecking = True
@@ -136,6 +137,7 @@ class ConvexHullSolver(QObject):
 					rightChecking = True
 					maxSlope = tempSlope
 					rightLowerTangent = currentRight
+					leftChecking = True
 			while(leftChecking == True):
 				currentLeft = currentLeft.prev # move the iterator counter clockwise 
 				if(currentLeft.point == leftHull.head.point):#made a full circle
@@ -150,15 +152,15 @@ class ConvexHullSolver(QObject):
 		return leftLowerTangent, rightLowerTangent
 	
 	def mergeHulls(self, leftHull, rightHull):
-		print("In mergeHulls")
+		#print("In mergeHulls")
 		leftUpperTangent, rightUpperTangent = self.findUpperTangent(leftHull, rightHull)
 		leftLowerTangent, rightLowerTangent = self.findLowerTangent(leftHull, rightHull)
-		print("Finished finding tangents")
+		#print("Finished finding tangents")
 		leftUpperTangent.next = rightUpperTangent
 		rightUpperTangent.prev = leftUpperTangent
 		rightLowerTangent.next = leftLowerTangent
 		leftLowerTangent.prev = rightLowerTangent
-		leftHull.display_forward()
+		#leftHull.display_forward()
 		return leftHull
 	
 	def divideAndConquer(self, sortedPoints):
@@ -216,7 +218,7 @@ class ConvexHullSolver(QObject):
 		# when passing lines to the display, pass a list of QLineF objects.  Each QLineF
 		# object can be created with two QPointF objects corresponding to the endpoints
 		#self.showHull(polygon,RED)
-		self.showText('Time Elapsed (Convex Hull): {:3.3f} sec'.format(t4-t3))
+		self.showText('Time Elapsed (Convex Hull): {:3.3f} sec'.format(t4-t1))
 	
 
 
